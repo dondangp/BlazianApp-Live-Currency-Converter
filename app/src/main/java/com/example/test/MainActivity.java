@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabs = binding.tabs;
         tabs.setupWithViewPager(viewPager);
-        FloatingActionButton fab = binding.fab;
+        FloatingActionButton fab = binding.fab; //THIS SHOULD BE WORKING NOW
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
