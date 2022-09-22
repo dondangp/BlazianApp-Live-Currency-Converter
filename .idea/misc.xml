@@ -3,7 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Coding/App/app/src/main/res/layout/activity_main.xml" value="0.3451086956521739" />
+        <entry key="..\:/Coding/App/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.232" />
+        <entry key="..\:/Coding/App/app/src/main/res/drawable/ic_baseline_attach_money_24.xml" value="0.15" />
+        <entry key="..\:/Coding/App/app/src/main/res/drawable/ic_baseline_attach_money_50.xml" value="0.15" />
+        <entry key="..\:/Coding/App/app/src/main/res/drawable/ic_launcher_background.xml" value="0.232" />
+        <entry key="..\:/Coding/App/app/src/main/res/drawable/map_selector.xml" value="0.1995" />
+        <entry key="..\:/Coding/App/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Coding/App/app/src/main/res/layout/fragment_main.xml" value="0.23822463768115942" />
+        <entry key="..\:/Coding/App/app/src/main/res/layout/launch.xml" value="0.19166666666666668" />
+        <entry key="..\:/Coding/App/app/src/main/res/layout/main_menu.xml" value="0.2749094202898551" />
+        <entry key="..\:/Coding/App/app/src/main/res/layout/test.xml" value="0.30932971014492755" />
+        <entry key="..\:/Coding/App/app/src/main/res/menu/bottom_navmenu.xml" value="0.2598958333333333" />
       </map>
     </option>
   </component>

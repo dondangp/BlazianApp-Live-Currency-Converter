@@ -1,4 +1,4 @@
-package com.example.test.ui.main;
+package com.example.BlazianApp.ui.main;
 
 import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;

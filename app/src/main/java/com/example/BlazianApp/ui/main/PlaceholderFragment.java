@@ -1,4 +1,4 @@
-package com.example.test.ui.main;
+package com.example.BlazianApp.ui.main;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,8 +12,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.test.R;
-import com.example.test.databinding.FragmentMainBinding;
+import com.example.BlazianApp.R;
+import com.example.BlazianApp.databinding.FragmentMainBinding;
 
 /**
  * A placeholder fragment containing a simple view.

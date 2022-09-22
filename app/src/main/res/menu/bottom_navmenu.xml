@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/miMap"
+        android:title="@string/page_1"
+        android:icon="@drawable/ic_outline_location_on_24" />
+
+    <item android:id="@+id/miTransactions"
+        android:title="@string/page_2"
+        android:icon="@drawable/ic_outline_list_alt_24" />
+
+    <item android:id="@+id/miPlaceholder"
+        android:title=""
+        android:enabled="false"
+        />
+
+    <item android:id="@+id/miInflationCalc"
+        android:title="@string/page_4"
+        android:icon="@drawable/ic_outline_line_axis_24" />
+
+    <item android:id="@+id/miCredits"
+        android:title="@string/page_5"
+        android:icon="@drawable/ic_outline_info_24" />
+</menu>
