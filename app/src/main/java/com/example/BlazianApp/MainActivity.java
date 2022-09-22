@@ -5,12 +5,17 @@ import android.os.Bundle;
 import com.google.android.material.bottomappbar.BottomAppBarTopEdgeTreatment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
-import androidx.viewpager.widget.ViewPager;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.view.MenuItem;
 import android.view.View;
 
 import com.example.BlazianApp.ui.main.SectionsPagerAdapter;
@@ -23,14 +28,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Initialize
+        MapFragment mapFragment = new MapFragment();
+        RecordFragment recordFragment = new RecordFragment();
+        ConvertFragment convertFragment = new ConvertFragment();
+        InflationFragment inflationFragment = new InflationFragment();
+        CreditsFragment creditsFragment = new CreditsFragment();
+
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // ViewerPage Section //
-        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
-        ViewPager viewPager = binding.viewPager;
-        viewPager.setAdapter(sectionsPagerAdapter);
+        // Change FrameLayout to Default
+        replaceFragment(convertFragment);
 
         // Bottom Navigation View Section //
         BottomNavigationView bnv = binding.bottomNavMenu;
@@ -39,15 +49,32 @@ public class MainActivity extends AppCompatActivity {
         bnv.setHapticFeedbackEnabled(false);
         bnv.setSoundEffectsEnabled(false);
 
+        // BNV selector
+        bnv.setOnItemSelectedListener(item->{
+            switch(item.getItemId()){
+                    case R.id.miMap: replaceFragment(mapFragment); break;
+                    case R.id.miRecords: replaceFragment(recordFragment); break;
+                    case R.id.miInflationCalc: replaceFragment(inflationFragment); break;
+                    case R.id.miCredits: replaceFragment(creditsFragment); break;
+            }
+            return true;
+        });
+
         // Floating Action Button Section //
         FloatingActionButton fab = binding.mainfab;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: insert code later
+                replaceFragment(convertFragment);
             }
         });
-        //LabLayout tabs = binding.tabs;
-        //tabs.setupWithViewPager(viewPager);
+    }
+
+    // Replace Fragment function
+    private void replaceFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container, fragment);
+        fragmentTransaction.commit();
     }
 }

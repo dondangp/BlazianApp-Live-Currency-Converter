@@ -8,10 +8,20 @@
         <entry key="..\:/Coding/App/app/src/main/res/drawable/ic_baseline_attach_money_50.xml" value="0.15" />
         <entry key="..\:/Coding/App/app/src/main/res/drawable/ic_launcher_background.xml" value="0.232" />
         <entry key="..\:/Coding/App/app/src/main/res/drawable/map_selector.xml" value="0.1995" />
-        <entry key="..\:/Coding/App/app/src/main/res/layout/activity_main.xml" value="0.33" />
-        <entry key="..\:/Coding/App/app/src/main/res/layout/fragment_main.xml" value="0.23822463768115942" />
+        <entry key="..\:/Coding/App/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Coding/App/app/src/main/res/layout/credits.xml" value="0.5" />
+        <entry key="..\:/Coding/App/app/src/main/res/layout/fragment_blank.xml" value="0.25" />
+        <entry key="..\:/Coding/App/app/src/main/res/layout/fragment_convert.xml" value="0.28177083333333336" />
+        <entry key="..\:/Coding/App/app/src/main/res/layout/fragment_credits.xml" value="0.2677083333333333" />
+        <entry key="..\:/Coding/App/app/src/main/res/layout/fragment_inflation.xml" value="0.28177083333333336" />
+        <entry key="..\:/Coding/App/app/src/main/res/layout/fragment_main.xml" value="0.22" />
+        <entry key="..\:/Coding/App/app/src/main/res/layout/fragment_map.xml" value="0.16394927536231885" />
+        <entry key="..\:/Coding/App/app/src/main/res/layout/fragment_record.xml" value="0.2677083333333333" />
+        <entry key="..\:/Coding/App/app/src/main/res/layout/inflation.xml" value="0.18840579710144928" />
         <entry key="..\:/Coding/App/app/src/main/res/layout/launch.xml" value="0.19166666666666668" />
         <entry key="..\:/Coding/App/app/src/main/res/layout/main_menu.xml" value="0.2749094202898551" />
+        <entry key="..\:/Coding/App/app/src/main/res/layout/map.xml" value="0.18840579710144928" />
+        <entry key="..\:/Coding/App/app/src/main/res/layout/records.xml" value="0.33" />
         <entry key="..\:/Coding/App/app/src/main/res/layout/test.xml" value="0.30932971014492755" />
         <entry key="..\:/Coding/App/app/src/main/res/menu/bottom_navmenu.xml" value="0.2598958333333333" />
       </map>

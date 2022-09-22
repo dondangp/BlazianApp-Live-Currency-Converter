@@ -5,7 +5,7 @@
         android:title="@string/page_1"
         android:icon="@drawable/ic_outline_location_on_24" />
 
-    <item android:id="@+id/miTransactions"
+    <item android:id="@+id/miRecords"
         android:title="@string/page_2"
         android:icon="@drawable/ic_outline_list_alt_24" />
 
