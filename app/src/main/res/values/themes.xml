@@ -24,6 +24,10 @@
     <style name="Theme.Blazian.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <!-- styles for fab button -->
+    <style name="FabDiamond">
+        <item name="cornerFamily">cut</item>
+        <item name="cornerSize">8dp</item>
+    </style>
 
 
 </resources>

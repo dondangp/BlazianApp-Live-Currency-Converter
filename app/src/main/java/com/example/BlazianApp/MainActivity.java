@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.miRecords: replaceFragment(recordFragment); break;
                     case R.id.miInflationCalc: replaceFragment(inflationFragment); break;
                     case R.id.miCredits: replaceFragment(creditsFragment); break;
+                    case R.id.miPlaceholder: replaceFragment(convertFragment);
             }
             return true;
         });
@@ -64,9 +65,7 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton fab = binding.mainfab;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                replaceFragment(convertFragment);
-            }
+            public void onClick(View view) {bnv.setSelectedItemId(R.id.miPlaceholder); replaceFragment(convertFragment);}
         });
     }
 
