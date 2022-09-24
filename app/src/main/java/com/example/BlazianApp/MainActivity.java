@@ -18,7 +18,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.BlazianApp.ui.main.SectionsPagerAdapter;
 import com.example.BlazianApp.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {

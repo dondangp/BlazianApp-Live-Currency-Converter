@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottomNavMenu"
-        android:background="@color/main_background">
+        android:background="@color/mint">
 
 
     </FrameLayout>
@@ -22,10 +22,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="#FFFFFF"
+        android:backgroundTint="@color/white"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_round_attach_money_50"
-        app:backgroundTint="#FFFFFF"
         app:fabSize="auto"
         app:layout_anchor="@id/bottomAppBar"
         app:layout_anchorGravity="center"
@@ -37,9 +36,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:backgroundTint="#FFFFFF"
+        android:backgroundTint="@color/white"
         android:soundEffectsEnabled="false"
-        app:backgroundTint="#FFFFFF"
         app:fabCradleMargin="10dp"
         app:fabCradleRoundedCornerRadius="15dp">
 
