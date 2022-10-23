@@ -156,6 +156,8 @@ public class InflationFragment extends Fragment {
         ArrayList<ILineDataSet> lineDataSets = new ArrayList<>();
         LineDataSet lineDataSet1 = new LineDataSet(yAxes, "Purchasing Power");
         lineDataSet1.setColor(Color.rgb(75,75,75));
+        lineDataSet1.setCircleColor(Color.rgb(75,75,75));
+        lineDataSet1.setValueTextSize(15f);
 
         lineDataSets.add(lineDataSet1);
 
@@ -163,7 +165,7 @@ public class InflationFragment extends Fragment {
         linechart.getXAxis().setPosition(XAxis.XAxisPosition.TOP);
         linechart.getAxisRight().setEnabled(false);
         linechart.setDragEnabled(true);
-        linechart.setScaleEnabled(false);
+        linechart.setScaleEnabled(true);
         linechart.setData(new LineData(lineDataSets));
         linechart.animateY(500);
 
