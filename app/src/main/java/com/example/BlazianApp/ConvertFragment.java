@@ -1,83 +1,134 @@
 package com.example.BlazianApp;
 
 
-import android.os.AsyncTask;
+
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.os.health.SystemHealthManager;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.BlazianApp.databinding.FragmentConvertBinding;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.DecimalFormat;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 
 public class ConvertFragment extends Fragment {
+
     private FragmentConvertBinding binding;
     private static String BASE_URL = "https://v6.exchangerate-api.com/v6/c23a1af81c0b35138e9d1190/latest/";
+    private EditText userConvert;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //binding for user interface
-        binding = FragmentConvertBinding.inflate(inflater,container,false);
+        binding = FragmentConvertBinding.inflate(getLayoutInflater());
+        userConvert = binding.userConverted;
+        EditText editText = binding.userAmount;
+        Spinner userSpinner = binding.userSpinner, convertSpinner = binding.convertSpinner;
 
-        // Making Request and Get Rates+Currencies
-        new getAPI().execute();
+        //default value or it'll error
+        editText.setText("1.00");
 
-        // get multipliers
-        //String userCurrency = binding.userSpinner.getSelectedItem().toString();
-        //String userSelected = binding.convertSpinner.getSelectedItem().toString();
+        // User edits/clicks onto EditText.
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                switch (actionId){
+                    case EditorInfo.IME_ACTION_DONE:
+                        convert(convertSpinner.getSelectedItem().toString(),
+                        userSpinner.getSelectedItem().toString(),
+                        editText.getText().toString());
+                        return true;
+                }
+                return false;
+            }
+        });
+        userSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                convert(convertSpinner.getSelectedItem().toString(),
+                        userSpinner.getSelectedItem().toString(),
+                        editText.getText().toString());
+            }
 
-        return inflater.inflate(R.layout.fragment_convert, container, false);
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+        convertSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                convert(convertSpinner.getSelectedItem().toString(),
+                        userSpinner.getSelectedItem().toString(),
+                        editText.getText().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+        return binding.getRoot();
     }
 
-    public class getAPI extends AsyncTask<Void, Void, Void> {
-        String result;
+    private void convert(final String to, final String from, String userAmount) {
+        CurrencyAPI api = getRetrofit().create(CurrencyAPI.class);
+        Call<JsonObject> call = api.getRate(from);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response)
+            {
+                Log.e(MainActivity.class.getSimpleName(), response.body().toString());
 
-        @Override
-        protected Void doInBackground(Void... voids){
-            URL url = null;
-            try {
-                url = new URL(BASE_URL + "USD");
-                HttpURLConnection request = (HttpURLConnection) url.openConnection();
-                request.connect();
+                JsonObject json = response.body();
+                JsonObject rates = json.getAsJsonObject("conversion_rates");
 
-                // Convert to JSON
-                Object results = request.getContent();
-                JsonObject jsonObject = JsonParser.parseReader(new InputStreamReader((InputStream) results)).getAsJsonObject();
+                String str_conversionValue = rates.get(to).toString();
 
-                // Accessing object
-                JsonObject conversionRates = jsonObject.get("conversion_rates").getAsJsonObject();
-                // Spinner Array
-                //List<String> spinnerArray =  new ArrayList<String>();
-                //spinnerArray = (List<String>) conversionRates.keySet();
-            } catch (MalformedURLException e) { e.printStackTrace(); }
-            catch (IOException e) { e.printStackTrace(); }
-            return null;
-        }
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-        }
+                DecimalFormat formatter = new DecimalFormat("#.##");
+                double conversionValue = Double.parseDouble(str_conversionValue);
+                double numberToConvert = Double.parseDouble(userAmount);
+                double result = numberToConvert * conversionValue;
+                userConvert.setText(""+formatter.format(result));
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t)
+            {}
+        });
+    }
+
+    private Retrofit getRetrofit() {
+        return (new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl("https://v6.exchangerate-api.com/v6/c23a1af81c0b35138e9d1190/latest/")
+                .build());
+    }
+
+    private interface CurrencyAPI {
+        @GET("{currency}")
+        Call<JsonObject> getRate(@Path("currency") String currency);
     }
 }

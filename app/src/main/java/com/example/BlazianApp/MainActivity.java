@@ -30,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // Initialize
 
-        //Get user permissions
-
         MapFragment mapFragment = new MapFragment();
         RecordFragment recordFragment = new RecordFragment();
         ConvertFragment convertFragment = new ConvertFragment();

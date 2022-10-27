@@ -9,9 +9,11 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.BlazianApp.databinding.FragmentInflationBinding;
 import com.github.mikephil.charting.charts.LineChart;
@@ -27,7 +29,6 @@ import java.util.ArrayList;
 public class InflationFragment extends Fragment {
 
     private FragmentInflationBinding binding;
-    ArrayList barArraylist;
     LineChart linechart;
 
     @Override
@@ -37,44 +38,47 @@ public class InflationFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentInflationBinding.inflate(inflater,container,false);
-        Spinner uY = binding.userYear, sY = binding.selectedYear;
-        EditText et = binding.userAmount;
+        binding = FragmentInflationBinding.inflate(getLayoutInflater());
+        Spinner userYear = binding.userYear, selectedYear = binding.selectedYear;
+        EditText editText = binding.userAmount;
 
         // when user clicks/edits
-        et.setOnClickListener(new View.OnClickListener() {
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onClick(View view) {
-                startGraph(et, uY, sY);
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                switch (actionId){
+                    case EditorInfo.IME_ACTION_DONE:
+                    case EditorInfo.IME_ACTION_NEXT:
+                    case EditorInfo.IME_ACTION_PREVIOUS:
+                        startGraph(editText, userYear, selectedYear);
+                        return true;
+                }
+                return false;
             }
         });
-        et.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                startGraph(et, uY, sY);
+                startGraph(editText, userYear, selectedYear);
             }
         });
-        uY.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        userYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                startGraph(et, uY, sY);
+                startGraph(editText, userYear, selectedYear);
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                //nothing
-            }
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
-        sY.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        selectedYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                startGraph(et, uY, sY);
+                startGraph(editText, userYear, selectedYear);
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                //nothing
-            }
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
         return binding.getRoot();
     }
@@ -102,7 +106,7 @@ public class InflationFragment extends Fragment {
 
     public void startGraph(EditText et, Spinner uY, Spinner sY){
         float userAmount = getData(et);
-        boolean flipped = false;
+        boolean flipped;
         int userYear, selectedYear, amountYears,startingIndex;
 
         //get data
