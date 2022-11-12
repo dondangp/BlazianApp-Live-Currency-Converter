@@ -51,7 +51,7 @@
                     app:layout_constraintVertical_bias="0.61">
 
                     <TextView
-                        android:id="@+id/textView7"
+                        android:id="@+id/userCurrencyText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="    -"
@@ -68,10 +68,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
                         android:src="@drawable/ic_sharp_calendar_month_24"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView7"
-                        app:layout_constraintEnd_toEndOf="@+id/textView7"
-                        app:layout_constraintStart_toStartOf="@+id/textView7"
-                        app:layout_constraintTop_toTopOf="@+id/textView7"
+                        app:layout_constraintBottom_toBottomOf="@+id/userCurrencyText"
+                        app:layout_constraintEnd_toEndOf="@+id/userCurrencyText"
+                        app:layout_constraintStart_toStartOf="@+id/userCurrencyText"
+                        app:layout_constraintTop_toTopOf="@+id/userCurrencyText"
                         app:tint="#757575" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -85,7 +85,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.19"
-                        app:layout_constraintStart_toEndOf="@+id/textView7"
+                        app:layout_constraintStart_toEndOf="@+id/userCurrencyText"
                         app:layout_constraintTop_toTopOf="parent">
 
                         <androidx.constraintlayout.widget.ConstraintLayout

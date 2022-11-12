@@ -60,7 +60,7 @@
                         android:id="@+id/userSpinner"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="54dp"
+                        android:layout_marginStart="88dp"
                         android:entries="@array/Currencies"
                         android:spinnerMode="dialog"
                         android:textAlignment="center"
@@ -69,6 +69,16 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:ignore="SpeakableTextPresentCheck" />
+
+                    <TextView
+                        android:id="@+id/userFlag"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="25sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/userSpinner"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -86,13 +96,14 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView5">
 
                     <TextView
-                        android:id="@+id/textView7"
+                        android:id="@+id/userCurrencyText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="$  -"
                         android:textSize="24sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/userLayout2"
+                        app:layout_constraintHorizontal_bias="0.4"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -110,7 +121,7 @@
                         android:elevation="5dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.982"
+                        app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -216,7 +227,7 @@
                         android:id="@+id/convertSpinner"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="54dp"
+                        android:layout_marginStart="88dp"
                         android:entries="@array/Currencies"
                         android:spinnerMode="dialog"
                         android:textAlignment="center"
@@ -225,6 +236,16 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:ignore="SpeakableTextPresentCheck" />
+
+                    <TextView
+                        android:id="@+id/resultFlag"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="25sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/convertSpinner"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
@@ -254,13 +275,14 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView4">
 
                     <TextView
-                        android:id="@+id/textView8"
+                        android:id="@+id/resultCurrencyText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="$  -"
                         android:textSize="24sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/constraintLayout4"
+                        app:layout_constraintHorizontal_bias="0.4"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -278,7 +300,7 @@
                         android:elevation="5dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.982"
+                        app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
