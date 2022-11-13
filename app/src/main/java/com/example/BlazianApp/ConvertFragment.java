@@ -22,6 +22,7 @@ import com.example.BlazianApp.databinding.FragmentConvertBinding;
 import com.google.gson.JsonObject;
 
 import java.text.DecimalFormat;
+import java.util.Currency;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,6 +38,7 @@ public class ConvertFragment extends Fragment {
     private FragmentConvertBinding binding;
     private static String BASE_URL = "https://v6.exchangerate-api.com/v6/c23a1af81c0b35138e9d1190/latest/";
     private EditText userConvert;
+    private TextView userCurrency, resultCurrency, userEmoji, resultEmoji;
 
     @Override
     public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); }
@@ -46,6 +48,10 @@ public class ConvertFragment extends Fragment {
         //binding for user interface
         binding = FragmentConvertBinding.inflate(getLayoutInflater());
         userConvert = binding.userConverted;
+        userCurrency = binding.userCurrencyText;
+        resultCurrency = binding.resultCurrencyText;
+        userEmoji = binding.userFlag;
+        resultEmoji = binding.resultFlag;
         EditText editText = binding.userAmount;
         Spinner userSpinner = binding.userSpinner, convertSpinner = binding.convertSpinner;
 
@@ -100,7 +106,6 @@ public class ConvertFragment extends Fragment {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response)
             {
-                Log.e(MainActivity.class.getSimpleName(), response.body().toString());
 
                 JsonObject json = response.body();
                 JsonObject rates = json.getAsJsonObject("conversion_rates");
@@ -112,12 +117,50 @@ public class ConvertFragment extends Fragment {
                 double numberToConvert = Double.parseDouble(userAmount);
                 double result = numberToConvert * conversionValue;
                 userConvert.setText(""+formatter.format(result));
+                String userC = Currency.getInstance(from).getSymbol();
+                String resultC = Currency.getInstance(to).getSymbol();
+
+                // change currency symbol
+                userCurrency.setText(""+userC+"  -");
+                resultCurrency.setText(""+resultC+"  -");
+
+                // parse given strings to ISO-3166
+                String toISO = to.substring(0,2);
+                String fromISO = from.substring(0,2);
+
+                // convert to unicode and turn into emoji.
+                userEmoji.setText(""+countryCodeToEmoji(fromISO));
+                resultEmoji.setText(""+countryCodeToEmoji(toISO));
+
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t)
             {}
         });
+    }
+
+    public String countryCodeToEmoji(String code) {
+        // offset between uppercase ASCII and regional indicator symbols
+        int OFFSET = 127397;
+
+        // validate code
+        if(code == null || code.length() != 2) {
+            return "";
+        }
+        //fix for uk -> gb
+        if (code.equalsIgnoreCase("uk")) {
+            code = "gb";
+        }
+        // convert code to uppercase
+        code = code.toUpperCase();
+        StringBuilder emojiStr = new StringBuilder();
+        // loop all characters
+        for (int i = 0; i < code.length(); i++) {
+            emojiStr.appendCodePoint(code.charAt(i) + OFFSET);
+        }
+        // return emoji
+        return emojiStr.toString();
     }
 
     private Retrofit getRetrofit() {
