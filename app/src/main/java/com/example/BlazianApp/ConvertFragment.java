@@ -50,7 +50,7 @@ public class ConvertFragment extends Fragment {
         userConvert = binding.userConverted;
         userCurrency = binding.userCurrencyText;
         resultCurrency = binding.resultCurrencyText;
-        userEmoji = binding.userFlag;
+        userEmoji = binding.toFlag;
         resultEmoji = binding.resultFlag;
         EditText editText = binding.userAmount;
         Spinner userSpinner = binding.userSpinner, convertSpinner = binding.convertSpinner;
