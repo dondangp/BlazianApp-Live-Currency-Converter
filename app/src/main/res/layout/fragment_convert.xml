@@ -71,7 +71,7 @@
                         tools:ignore="SpeakableTextPresentCheck" />
 
                     <TextView
-                        android:id="@+id/toFlag"
+                        android:id="@+id/userFlag"
                         android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:textSize="25sp"

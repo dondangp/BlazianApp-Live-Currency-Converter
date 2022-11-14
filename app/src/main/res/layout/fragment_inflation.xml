@@ -101,7 +101,7 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <Spinner
-                                android:id="@+id/toCurrency"
+                                android:id="@+id/userYear"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:dropDownWidth="match_parent"
@@ -128,7 +128,7 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <Spinner
-                                android:id="@+id/fromCurrency"
+                                android:id="@+id/selectedYear"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:entries="@array/InflationYears"
