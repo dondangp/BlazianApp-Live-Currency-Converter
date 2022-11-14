@@ -75,7 +75,7 @@
                         app:tint="#757575" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/userLayoutCEnter"
+                        android:id="@+id/userCurrencies"
                         android:layout_width="300dp"
                         android:layout_height="49dp"
                         android:layout_alignParentTop="true"
@@ -101,7 +101,7 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <Spinner
-                                android:id="@+id/userYear"
+                                android:id="@+id/toCurrency"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:dropDownWidth="match_parent"
@@ -128,7 +128,7 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <Spinner
-                                android:id="@+id/selectedYear"
+                                android:id="@+id/fromCurrency"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:entries="@array/InflationYears"
