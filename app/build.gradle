@@ -5,6 +5,11 @@ plugins {
 android {
     compileSdk 32
 
+    lintOptions{
+        disable 'SetTextI18n'
+        disable 'HardcodedText'
+    }
+
     defaultConfig {
         applicationId "com.example.BlazianApp"
         minSdk 21

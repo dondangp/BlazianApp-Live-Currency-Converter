@@ -3,6 +3,7 @@ package com.example.BlazianApp;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.KeyEvent;
@@ -37,31 +38,25 @@ public class InflationFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentInflationBinding.inflate(getLayoutInflater());
         Spinner userYear = binding.userYear, selectedYear = binding.selectedYear;
         EditText editText = binding.userAmount;
 
         // when user clicks/edits
-        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                switch (actionId){
-                    case EditorInfo.IME_ACTION_DONE:
-                    case EditorInfo.IME_ACTION_NEXT:
-                    case EditorInfo.IME_ACTION_PREVIOUS:
-                        startGraph(editText, userYear, selectedYear);
-                        return true;
-                }
-                return false;
+        editText.setOnEditorActionListener((v, actionId, event) -> {
+            switch (actionId){
+                case EditorInfo.IME_ACTION_DONE:
+                case EditorInfo.IME_ACTION_NEXT:
+                case EditorInfo.IME_ACTION_PREVIOUS:
+                    startGraph(editText, userYear, selectedYear);
+                    return true;
             }
+            return false;
         });
-        editText.setOnFocusChangeListener(new View.OnFocusChangeListener(){
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                startGraph(editText, userYear, selectedYear);
-            }
-        });
+
+        editText.setOnFocusChangeListener((v, hasFocus) -> startGraph(editText, userYear, selectedYear));
+
         userYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

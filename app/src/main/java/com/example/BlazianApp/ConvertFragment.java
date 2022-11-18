@@ -7,8 +7,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +21,7 @@ import com.google.gson.JsonObject;
 
 import java.text.DecimalFormat;
 import java.util.Currency;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,8 +34,8 @@ import retrofit2.http.Path;
 
 public class ConvertFragment extends Fragment {
 
-    private FragmentConvertBinding binding;
-    private static String BASE_URL = "https://v6.exchangerate-api.com/v6/c23a1af81c0b35138e9d1190/latest/";
+
+    private static final String BASE_URL = "https://v6.exchangerate-api.com/v6/c23a1af81c0b35138e9d1190/latest/";
     private EditText userConvert;
     private TextView userCurrency, resultCurrency, userEmoji, resultEmoji;
 
@@ -44,9 +43,9 @@ public class ConvertFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //binding for user interface
-        binding = FragmentConvertBinding.inflate(getLayoutInflater());
+        FragmentConvertBinding binding = FragmentConvertBinding.inflate(getLayoutInflater());
         userConvert = binding.userConverted;
         userCurrency = binding.userCurrencyText;
         resultCurrency = binding.resultCurrencyText;
@@ -59,18 +58,14 @@ public class ConvertFragment extends Fragment {
         editText.setText("1.00");
 
         // User edits/clicks onto EditText.
-        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                switch (actionId){
-                    case EditorInfo.IME_ACTION_DONE:
-                        convert(convertSpinner.getSelectedItem().toString(),
+        editText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                convert(convertSpinner.getSelectedItem().toString(),
                         userSpinner.getSelectedItem().toString(),
                         editText.getText().toString());
-                        return true;
-                }
-                return false;
+                return true;
             }
+            return false;
         });
         userSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -108,7 +103,7 @@ public class ConvertFragment extends Fragment {
             {
 
                 JsonObject json = response.body();
-                JsonObject rates = json.getAsJsonObject("conversion_rates");
+                JsonObject rates = Objects.requireNonNull(json).getAsJsonObject("conversion_rates");
 
                 String str_conversionValue = rates.get(to).toString();
 
@@ -116,21 +111,21 @@ public class ConvertFragment extends Fragment {
                 double conversionValue = Double.parseDouble(str_conversionValue);
                 double numberToConvert = Double.parseDouble(userAmount);
                 double result = numberToConvert * conversionValue;
-                userConvert.setText(""+formatter.format(result));
+                userConvert.setText(formatter.format(result));
                 String userC = Currency.getInstance(from).getSymbol();
                 String resultC = Currency.getInstance(to).getSymbol();
 
                 // change currency symbol
-                userCurrency.setText(""+userC+"  -");
-                resultCurrency.setText(""+resultC+"  -");
+                userCurrency.setText(userC+"  -");
+                resultCurrency.setText(resultC+"  -");
 
                 // parse given strings to ISO-3166
                 String toISO = to.substring(0,2);
                 String fromISO = from.substring(0,2);
 
                 // convert to unicode and turn into emoji.
-                userEmoji.setText(""+countryCodeToEmoji(fromISO));
-                resultEmoji.setText(""+countryCodeToEmoji(toISO));
+                userEmoji.setText(countryCodeToEmoji(fromISO));
+                resultEmoji.setText(countryCodeToEmoji(toISO));
 
             }
 
