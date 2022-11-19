@@ -7,24 +7,26 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.BlazianApp.databinding.FragmentAddRecordBinding;
-import com.example.BlazianApp.databinding.FragmentConvertBinding;
 
 import java.util.Currency;
 import java.util.Objects;
 
 
 public class AddRecordFragment extends Fragment {
-    private TextView userTextSymbol, userEmoji, resultEmoji;
+    private TextView fromTextSymbol, fromEmoji, toTextSymbol, toEmoji;
 
     @Override
     public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); }
@@ -36,10 +38,15 @@ public class AddRecordFragment extends Fragment {
         // initialize
         ImageButton backButton = binding.back;
         Button confirmButton = binding.confirm;
-        userTextSymbol = binding.userCurrencyText;
-        userEmoji = binding.fromFlag;
-        resultEmoji = binding.toFlag;
         Spinner toCurrency = binding.toCurrency, fromCurrency = binding.fromCurrency;
+        EditText userAmount = binding.userAmount, convertedAmount = binding.convertedAmount,
+                userFees = binding.userFees, enteredDate = binding.enteredDate, givenLocation = binding.enteredLocation;
+
+
+        fromTextSymbol = binding.fromCurrencyText;
+        toTextSymbol = binding.toCurrencyText;
+        fromEmoji = binding.fromFlag;
+        toEmoji = binding.toFlag;
 
 
         // listeners
@@ -63,50 +70,55 @@ public class AddRecordFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
+
+        // Buttons to confirm/back out
         backButton.setOnClickListener(v -> {
             FragmentManager fm = requireActivity().getSupportFragmentManager();
             fm.popBackStack();
         });
 
+        confirmButton.setOnClickListener(v -> {
+            //check if all are filled
+
+                //add information to model
+                FragmentManager fm = getParentFragmentManager();
+                RecordFragment fragment = (RecordFragment)fm.findFragmentByTag("fragRecord");
+                Objects.requireNonNull(fragment).setUpTransactions(
+                        enteredDate.getText().toString(),
+                        givenLocation.getText().toString(),
+                        userAmount.getText().toString(),
+                        convertedAmount.getText().toString(),
+                        userFees.getText().toString(),
+                        fromEmoji.getText().toString(),
+                        toEmoji.getText().toString());
+
+                fm.popBackStack();
+
+
+        });
+
         return binding.getRoot();
     }
 
+
     private void symbol(final String to, final String from) {
-        String resultC = Currency.getInstance(from).getSymbol();
+        String resultC = Currency.getInstance(to).getSymbol();
+        String userC = Currency.getInstance(from).getSymbol();
 
         // change currency symbol
-        userTextSymbol.setText(""+resultC);
+        fromTextSymbol.setText(""+userC);
+        toTextSymbol.setText(""+resultC);
 
         // parse given strings to ISO-3166
         String toISO = to.substring(0,2);
         String fromISO = from.substring(0,2);
 
         // convert to unicode and turn into emoji.
+        FragmentManager fm = getParentFragmentManager();
+        ConvertFragment fragment = (ConvertFragment)fm.findFragmentByTag("fragConvert");
 
-        userEmoji.setText(""+countryCodeToEmoji(fromISO));
-        resultEmoji.setText(""+countryCodeToEmoji(toISO));
+        fromEmoji.setText(""+ Objects.requireNonNull(fragment).countryCodeToEmoji(fromISO));
+        toEmoji.setText(""+Objects.requireNonNull(fragment).countryCodeToEmoji(toISO));
     }
 
-    public String countryCodeToEmoji(String code) {
-        // offset between uppercase ASCII and regional indicator symbols
-        int OFFSET = 127397;
-
-        // validate code
-        if(code == null || code.length() != 2) {
-            return "";
-        }
-        //fix for uk -> gb
-        if (code.equalsIgnoreCase("uk")) {
-            code = "gb";
-        }
-        // convert code to uppercase
-        code = code.toUpperCase();
-        StringBuilder emojiStr = new StringBuilder();
-        // loop all characters
-        for (int i = 0; i < code.length(); i++) {
-            emojiStr.appendCodePoint(code.charAt(i) + OFFSET);
-        }
-        // return emoji
-        return emojiStr.toString();
-    }
 }
