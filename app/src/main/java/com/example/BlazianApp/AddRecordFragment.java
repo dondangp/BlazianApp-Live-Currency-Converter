@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.BlazianApp.databinding.FragmentAddRecordBinding;
 
@@ -78,23 +76,19 @@ public class AddRecordFragment extends Fragment {
         });
 
         confirmButton.setOnClickListener(v -> {
-            //check if all are filled
+            //add information to model
+            FragmentManager fm = getParentFragmentManager();
+            RecordFragment fragment = (RecordFragment)fm.findFragmentByTag("fragRecord");
+            Objects.requireNonNull(fragment).setUpTransactions(
+                    enteredDate.getText().toString(),
+                    givenLocation.getText().toString(),
+                    userAmount.getText().toString(),
+                    convertedAmount.getText().toString(),
+                    userFees.getText().toString(),
+                    fromEmoji.getText().toString(),
+                    toEmoji.getText().toString());
 
-                //add information to model
-                FragmentManager fm = getParentFragmentManager();
-                RecordFragment fragment = (RecordFragment)fm.findFragmentByTag("fragRecord");
-                Objects.requireNonNull(fragment).setUpTransactions(
-                        enteredDate.getText().toString(),
-                        givenLocation.getText().toString(),
-                        userAmount.getText().toString(),
-                        convertedAmount.getText().toString(),
-                        userFees.getText().toString(),
-                        fromEmoji.getText().toString(),
-                        toEmoji.getText().toString());
-
-                fm.popBackStack();
-
-
+            fm.popBackStack();
         });
 
         return binding.getRoot();

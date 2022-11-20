@@ -1,6 +1,5 @@
 package com.example.BlazianApp;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +11,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class Transaction_RecyclerViewAdapter extends RecyclerView.Adapter<Transaction_RecyclerViewAdapter.MyViewHolder> {
+    private final RecyclerViewInterface recyclerViewInterface;
+
     RecordFragment context;
     ArrayList<TransactionModel> transactionModels;
 
-    public Transaction_RecyclerViewAdapter(RecordFragment context, ArrayList<TransactionModel> transactionModels){
+    public Transaction_RecyclerViewAdapter(RecordFragment context, ArrayList<TransactionModel> transactionModels,
+        RecyclerViewInterface recyclerViewInterface){
         this.context = context;
         this.transactionModels = transactionModels;
+        this.recyclerViewInterface = recyclerViewInterface;
     }
 
     @NonNull
@@ -26,7 +29,7 @@ public class Transaction_RecyclerViewAdapter extends RecyclerView.Adapter<Transa
         LayoutInflater inflater = LayoutInflater.from(context.getContext());
         View view = inflater.inflate(R.layout.recycler_view_row, parent, false);
 
-        return new Transaction_RecyclerViewAdapter.MyViewHolder(view);
+        return new Transaction_RecyclerViewAdapter.MyViewHolder(view, recyclerViewInterface);
     }
 
     @Override
@@ -48,7 +51,7 @@ public class Transaction_RecyclerViewAdapter extends RecyclerView.Adapter<Transa
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         TextView fromAmount, toAmount, fees, date, location, fromFlag, toFlag;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
             fromAmount = itemView.findViewById(R.id.FromCash);
             toAmount = itemView.findViewById(R.id.ToCash);
@@ -58,6 +61,17 @@ public class Transaction_RecyclerViewAdapter extends RecyclerView.Adapter<Transa
             fromFlag = itemView.findViewById(R.id.FromFlag);
             toFlag = itemView.findViewById(R.id.ToFlag);
 
+            itemView.setOnLongClickListener(v -> {
+                if(recyclerViewInterface != null){
+                    int pos = getAdapterPosition();
+                    if(pos != RecyclerView.NO_POSITION){
+                        recyclerViewInterface.onItemLongClick(pos);
+                    }
+                }
+                return true;
+            });
         }
+
+
     }
 }
