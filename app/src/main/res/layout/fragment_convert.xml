@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ConvertFragment">
 
-    <!-- TODO: Update blank fragment layout -->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -99,7 +98,6 @@
                         android:id="@+id/userCurrencyText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$  -"
                         android:textSize="24sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/userLayout2"
@@ -278,7 +276,6 @@
                         android:id="@+id/resultCurrencyText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$  -"
                         android:textSize="24sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/constraintLayout4"

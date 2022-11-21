@@ -75,7 +75,7 @@
                         app:tint="#757575" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/userLayoutCEnter"
+                        android:id="@+id/userCurrencies"
                         android:layout_width="300dp"
                         android:layout_height="49dp"
                         android:layout_alignParentTop="true"
