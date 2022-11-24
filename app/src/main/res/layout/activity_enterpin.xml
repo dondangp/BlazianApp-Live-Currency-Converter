@@ -6,4 +6,36 @@
     android:layout_height="match_parent"
     tools:context=".Enterpin">
 
+    <EditText
+        android:id="@+id/editTextTextPassword3"
+        android:layout_width="378dp"
+        android:layout_height="65dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="178dp" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="220dp"
+        android:layout_height="52dp"
+        android:text="Enter"
+        tools:layout_editor_absoluteX="95dp"
+        tools:layout_editor_absoluteY="278dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="270dp"
+        android:layout_height="35dp"
+        android:text="Enter pin"
+        tools:layout_editor_absoluteX="17dp"
+        tools:layout_editor_absoluteY="143dp" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="222dp"
+        android:layout_height="38dp"
+        android:text="Forgot pin"
+        tools:layout_editor_absoluteX="93dp"
+        tools:layout_editor_absoluteY="410dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

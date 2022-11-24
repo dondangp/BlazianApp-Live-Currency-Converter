@@ -10,7 +10,9 @@
         android:id="@+id/TextView"
         android:layout_width="181dp"
         android:layout_height="57dp"
+        android:layout_marginStart="104dp"
         android:text="Loading..."
-        tools:layout_editor_absoluteX="104dp"
-        tools:layout_editor_absoluteY="337dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
