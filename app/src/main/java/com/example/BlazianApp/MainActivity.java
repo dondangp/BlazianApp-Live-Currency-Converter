@@ -11,6 +11,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+
 
 
 
@@ -22,6 +24,11 @@ public class MainActivity extends AppCompatActivity {
     ConvertFragment convertFragment = new ConvertFragment();
     InflationFragment inflationFragment = new InflationFragment();
     CreditsFragment creditsFragment = new CreditsFragment();
+
+    Setpin setpin = new Setpin();
+    Splash splash = new Splash();
+    Enterpin enterpin = new Enterpin();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
