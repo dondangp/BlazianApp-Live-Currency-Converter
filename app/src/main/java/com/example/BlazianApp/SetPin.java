@@ -22,11 +22,11 @@ public class SetPin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setpin);
 
-        editTextTextPassword1 = (EditText) findViewById(R.id.editTextTextPassword1);
-        editTextTextPassword2 = (EditText) findViewById(R.id.editTextTextPassword2);
-        SQ_question = (Spinner) findViewById(R.id.userSpinner);
-        SQ_answer = (EditText) findViewById(R.id.editTextTextSQAnswer);
-        button = (Button) findViewById(R.id.button);
+        editTextTextPassword1 = findViewById(R.id.editTextTextPassword1);
+        editTextTextPassword2 = findViewById(R.id.editTextTextPassword2);
+        SQ_question = findViewById(R.id.userSpinner);
+        SQ_answer = findViewById(R.id.editTextTextSQAnswer);
+        button = findViewById(R.id.button);
         RecordFragment recordFragment = MainActivity.getInstance().recordFragment;
         button.setOnClickListener(view -> {
             String pin1 = editTextTextPassword1.getText().toString();
