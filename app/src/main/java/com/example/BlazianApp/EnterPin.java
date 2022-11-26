@@ -25,9 +25,9 @@ public class EnterPin extends AppCompatActivity {
         SharedPreferences settings = getSharedPreferences("PIN", Context.MODE_PRIVATE);
         pin = settings.getString("Pin","");
         RecordFragment recordFragment = MainActivity.getInstance().recordFragment;
-        editTextTextPassword3 = (EditText) findViewById(R.id.editTextTextPassword3);
-        button = (Button) findViewById(R.id.button);
-        forgot = (Button) findViewById(R.id.button3);
+        editTextTextPassword3 = findViewById(R.id.editTextTextPassword3);
+        button = findViewById(R.id.button);
+        forgot = findViewById(R.id.button3);
 
         button.setOnClickListener(view -> {
             String text = editTextTextPassword3.getText().toString();

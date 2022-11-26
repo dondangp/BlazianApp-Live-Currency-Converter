@@ -24,8 +24,8 @@ public class forgotPin extends AppCompatActivity {
         SharedPreferences settings = getSharedPreferences("PIN", Context.MODE_PRIVATE);
         String question = settings.getString("SQ","");
         String answer = settings.getString("SQAnswer","");
-        button = (Button) findViewById(R.id.button);
-        TextView text = (TextView) findViewById(R.id.userQuestion);
+        button = findViewById(R.id.button);
+        TextView text = findViewById(R.id.userQuestion);
 
 
         //initial
