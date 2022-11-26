@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Enterpin">
+    tools:context=".EnterPin">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/userBubble"
@@ -26,50 +26,39 @@
 
         <EditText
             android:id="@+id/editTextTextPassword3"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="53dp"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
             android:ems="10"
-            android:inputType="textPassword"
-            app:layout_constraintBottom_toTopOf="@+id/button"
+            android:hint="Enter PIN"
+            android:inputType="numberPassword"
+            android:textColorHint="#757575"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.4"
+            android:autofillHints=""/>
 
         <Button
             android:id="@+id/button"
-            android:layout_width="220dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="71dp"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="32dp"
+            android:elevation="8dp"
             android:text="Enter"
-            app:layout_constraintBottom_toTopOf="@+id/button3"
+            android:textColor="#616161"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword3" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="261dp"
-            android:layout_height="27dp"
-            android:layout_marginStart="17dp"
-            android:layout_marginTop="143dp"
-            android:layout_marginEnd="16dp"
-            android:text="Enter pin"
-            app:layout_constraintBottom_toTopOf="@+id/editTextTextPassword3"
-            app:layout_constraintEnd_toEndOf="@+id/button3"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <Button
             android:id="@+id/button3"
-            android:layout_width="222dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="176dp"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="32dp"
+            android:elevation="8dp"
             android:text="Forgot pin"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:textColor="#616161"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button" />

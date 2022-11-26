@@ -26,6 +26,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Splash"
+            android:theme="@style/Theme.Blazian.NoActionBar"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".EnterPin"
+            android:theme="@style/Theme.Blazian.NoActionBar"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SetPin"
+            android:theme="@style/Theme.Blazian.NoActionBar"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -2,6 +2,7 @@ package com.example.BlazianApp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,29 +17,23 @@ public class Splash extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        SharedPreferences settings = getSharedPreferences("PRESS",0);
-        pin = settings.getString("pin","");
+        SharedPreferences settings = getSharedPreferences("PIN", Context.MODE_PRIVATE);
+        pin = settings.getString("Pin","");
 
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable()
-        {
-            @Override
-            public void run()
+        handler.postDelayed(() -> {
+            Intent intent;
+            if(pin.equals("")) //if it's a new user
             {
-                if(pin.equals("")) //if it's a new user
-                {
-                    Intent intent = new Intent(getApplicationContext(), Setpin.class);
-                    startActivity(intent);
-                    finish();
-                }
-
-                else //if pin already set by user
-                {
-                    Intent intent = new Intent(getApplicationContext(), Enterpin.class);
-                    startActivity(intent);
-                    finish();
-                }
+                intent = new Intent(getApplicationContext(), SetPin.class);
             }
-        }, 2000);
+
+            else //if pin already set by user
+            {
+                intent = new Intent(getApplicationContext(), EnterPin.class);
+            }
+            startActivity(intent);
+            finish();
+        }, 100);
     }
 }
