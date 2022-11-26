@@ -69,7 +69,7 @@ public class RecordFragment extends Fragment implements RecyclerViewInterface {
     }
 
     private void saveData(){
-        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("shared prefences", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("RecordData", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(transactionModels);
@@ -78,7 +78,7 @@ public class RecordFragment extends Fragment implements RecyclerViewInterface {
     }
 
     private void loadData(){
-        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("shared prefences", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("RecordData", Context.MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("Transaction List", "");
         Type type = new TypeToken<ArrayList<TransactionModel>>() {}.getType();

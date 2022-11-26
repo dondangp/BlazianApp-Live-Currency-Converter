@@ -11,17 +11,21 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+
 
 
 
 import com.example.BlazianApp.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
-    MapFragment mapFragment = new MapFragment();
-    RecordFragment recordFragment = new RecordFragment();
-    ConvertFragment convertFragment = new ConvertFragment();
-    InflationFragment inflationFragment = new InflationFragment();
-    CreditsFragment creditsFragment = new CreditsFragment();
+    public MapFragment mapFragment = new MapFragment();
+    public ConvertFragment convertFragment = new ConvertFragment();
+    public RecordFragment recordFragment = new RecordFragment();
+    public InflationFragment inflationFragment = new InflationFragment();
+    public CreditsFragment creditsFragment = new CreditsFragment();
+
+    private static MainActivity instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         // Initialize
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        instance = this;
 
 
         // Change FrameLayout to Default
@@ -45,7 +49,10 @@ public class MainActivity extends AppCompatActivity {
         // BNV selector, Gradle Plugin hates switch cases, so this will look ugly.
         bnv.setOnItemSelectedListener(item->{
             if (item.getItemId() == R.id.miMap) {replaceFragment(mapFragment, "fragMap");}
-            if (item.getItemId() == R.id.miRecords) {replaceFragment(recordFragment, "fragRecord");}
+            if (item.getItemId() == R.id.miRecords) {
+                Intent intent = new Intent(getApplicationContext(), Splash.class);
+                startActivity(intent);
+            }
             if (item.getItemId() == R.id.miInflationCalc) {replaceFragment(inflationFragment, "fragInflation");}
             if (item.getItemId() == R.id.miCredits) {replaceFragment(creditsFragment, "fragCredits");}
             if (item.getItemId() == R.id.miPlaceholder) {replaceFragment(convertFragment, "fragConvert");}
@@ -57,6 +64,10 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(view -> {bnv.setSelectedItemId(R.id.miPlaceholder); replaceFragment(convertFragment, "fragConvert");});
     }
 
+    public static MainActivity getInstance() {
+        return instance;
+    }
+
     // Replace Fragment function
     public void replaceFragment(Fragment fragment, String tagFrag){
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -64,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.replace(R.id.container, fragment, tagFrag);
-        fragmentTransaction.commit();
+        fragmentTransaction.commitAllowingStateLoss();
     }
 
     public int getFragId(Fragment fragment){

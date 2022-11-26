@@ -20,11 +20,38 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Blazian.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
-        <intent-filter>
+            android:windowSoftInputMode="adjustPan"
+            tools:ignore="LockedOrientationActivity">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".Splash"
+            android:screenOrientation="portrait"
+            android:exported="false"
+            android:theme="@style/Theme.Blazian.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".EnterPin"
+            android:screenOrientation="portrait"
+            android:exported="false"
+            android:theme="@style/Theme.Blazian.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".SetPin"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Blazian.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".forgotPin"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Blazian.NoActionBar"
+            tools:ignore="LockedOrientationActivity">
         </activity>
     </application>
 
