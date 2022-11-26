@@ -51,7 +51,7 @@ public class AddRecordFragment extends Fragment {
         toCurrency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                symbol(toCurrency.getSelectedItem().toString(), fromCurrency.getSelectedItem().toString());
+                symbol(fromCurrency.getSelectedItem().toString(), toCurrency.getSelectedItem().toString());
             }
 
             @Override
@@ -61,7 +61,7 @@ public class AddRecordFragment extends Fragment {
         fromCurrency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                symbol(toCurrency.getSelectedItem().toString(), fromCurrency.getSelectedItem().toString());
+                symbol(fromCurrency.getSelectedItem().toString(), toCurrency.getSelectedItem().toString());
             }
 
             @Override
