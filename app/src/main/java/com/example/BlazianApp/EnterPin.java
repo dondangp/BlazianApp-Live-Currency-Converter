@@ -14,7 +14,7 @@ import android.widget.Toast;
 public class EnterPin extends AppCompatActivity {
 
     EditText editTextTextPassword3;
-    Button button;
+    Button button, forgot;
 
     String pin;
 
@@ -28,10 +28,10 @@ public class EnterPin extends AppCompatActivity {
         RecordFragment recordFragment = MainActivity.getInstance().recordFragment;
         editTextTextPassword3 = (EditText) findViewById(R.id.editTextTextPassword3);
         button = (Button) findViewById(R.id.button);
+        forgot = (Button) findViewById(R.id.button3);
 
         button.setOnClickListener(view -> {
             String text = editTextTextPassword3.getText().toString();
-
             if(text.equals(pin))
             {
                 MainActivity.getInstance().replaceFragment(recordFragment, "fragRecord");
@@ -41,6 +41,12 @@ public class EnterPin extends AppCompatActivity {
             {
                 Toast.makeText(EnterPin.this,"Wrong pin. Please try again",Toast.LENGTH_SHORT).show();
             }
+        });
+
+        forgot.setOnClickListener(view ->{
+            Intent intent = new Intent(getApplicationContext(), forgotPin.class);
+            startActivity(intent);
+            finish();
         });
 
 
