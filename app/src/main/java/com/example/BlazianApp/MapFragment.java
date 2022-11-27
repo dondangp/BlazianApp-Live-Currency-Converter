@@ -3,17 +3,22 @@ package com.example.BlazianApp;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.Manifest;
 import android.Manifest.permission;
 import android.location.Location;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -193,8 +198,8 @@ public class MapFragment extends Fragment {
                     LatLng placeLL = null;
                     String placeName = "Not Provided";
                     String vicinity = "Not Provided";
-                    String phoneNumber = "Not Provided";
-                    String website = "Not Provided";
+                    String phoneNumber = "Number: Not Provided";
+                    String website = "Website: Not Provided";
                     int currIcon = bankIcon;
                     try {
                         //attempt to retrieve place data values
@@ -230,6 +235,36 @@ public class MapFragment extends Fragment {
                                 .position(placeLL)
                                 .title(placeName)
                                 .snippet(vicinity+"\n"+phoneNumber+"\n"+website);
+
+                    map.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+                        @Override
+                        public View getInfoWindow(Marker arg0) {
+                            return null;
+                        }
+
+                        @Override
+                        public View getInfoContents(Marker marker) {
+
+                            LinearLayout info = new LinearLayout(getActivity());
+                            info.setOrientation(LinearLayout.VERTICAL);
+
+                            TextView title = new TextView(getActivity());
+                            title.setTextColor(Color.BLACK);
+                            title.setGravity(Gravity.CENTER);
+                            title.setTypeface(null, Typeface.BOLD);
+                            title.setText(marker.getTitle());
+
+                            TextView snippet = new TextView(getActivity());
+                            snippet.setTextColor(Color.GRAY);
+                            snippet.setText(marker.getSnippet());
+
+                            info.addView(title);
+                            info.addView(snippet);
+
+                            return info;
+                        }
+                    });
                 }
             } catch (Exception e) {
                 e.printStackTrace();
