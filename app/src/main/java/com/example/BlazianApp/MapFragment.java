@@ -2,31 +2,270 @@ package com.example.BlazianApp;
 
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.Manifest;
 import android.Manifest.permission;
 import android.location.Location;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.Places;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.example.BlazianApp.databinding.FragmentMapBinding;
 
-public class MapFragment extends Fragment implements GoogleMap.OnMyLocationButtonClickListener,
-        GoogleMap.OnMyLocationClickListener {
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+
+public class MapFragment extends Fragment {
 
     private GoogleMap map;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private LocationManager locationManager;
+    private Marker userMarker;
+    private boolean updateFinished = true;
+
+    private Marker[] placeMarkers;
+    private final int MAX_PLACES = 10;
+    private MarkerOptions[] places;
+    private int bankIcon = R.drawable.bank_point;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); }
+
+    @SuppressLint("NewApi")
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        FragmentMapBinding binding = FragmentMapBinding.inflate(getLayoutInflater());
+        getActivity().setContentView(R.layout.fragment_map);
+        //find out if we already have it
+        if(map==null){
+            //get the map
+            SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.google_map);
+            supportMapFragment.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(@NonNull GoogleMap map) {
+                    enableMyLocation(map);
+                }
+            });
+        }
+        return binding.getRoot();
+    }
+
+    @SuppressLint("MissingPermission")
+    private void enableMyLocation(GoogleMap map) {
+        // 1. Check if permissions are granted, if so, enable the my location layer
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(getActivity(), permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            //map.setMyLocationEnabled(true);
+            map.getUiSettings().setMyLocationButtonEnabled(true);
+            return;
+        }
+
+        PermissionUtils.requestLocationPermissions(getActivity(), LOCATION_PERMISSION_REQUEST_CODE, true);
+    }
+
+    public void onLocationChanged(Location location) {
+        updatePlaces();
+    }
+
+    /*
+     * update the place markers
+     */
+    private void updatePlaces(){
+        //get location manager
+        //get last location
+        @SuppressLint("MissingPermission") Location lastLoc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        double lat = lastLoc.getLatitude();
+        double lng = lastLoc.getLongitude();
+        //create LatLng
+        LatLng lastLatLng = new LatLng(lat, lng);
+
+        //remove any existing marker
+        if(userMarker!=null) userMarker.remove();
+        //create and set marker properties
+        userMarker = map.addMarker(new MarkerOptions()
+                .position(lastLatLng)
+                .title("You are here")
+                .snippet("Your last recorded location"));
+        //move to location
+        map.animateCamera(CameraUpdateFactory.newLatLng(lastLatLng), 3000, null);
+
+        //build places query string
+        String placesSearchStr = "https://maps.googleapis.com/maps/api/place/nearbysearch/" +
+                "json?location="+lat+","+lng+
+                "&radius=1000&sensor=true" +
+                "&types=bank"+
+                "&key=AIzaSyBVf95WgIjA5qAH5MGdOEM9PLc1l_4WLVA";//ADD KEY
+
+        //execute query
+        new GetPlaces().execute(placesSearchStr);
+    }
+
+    private class GetPlaces extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... placesURL) {
+            //fetch places
+            updateFinished = false;
+            StringBuilder placesBuilder = new StringBuilder();
+            for (String placeSearchURL : placesURL) {
+                try {
+
+                    URL requestUrl = new URL(placeSearchURL);
+                    HttpURLConnection connection = (HttpURLConnection)requestUrl.openConnection();
+                    connection.setRequestMethod("GET");
+                    connection.connect();
+                    int responseCode = connection.getResponseCode();
+
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+
+                        BufferedReader reader = null;
+
+                        InputStream inputStream = connection.getInputStream();
+                        if (inputStream == null) {
+                            return "";
+                        }
+                        reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+
+                            placesBuilder.append(line + "\n");
+                        }
+
+                        if (placesBuilder.length() == 0) {
+                            return "";
+                        }
+
+                    }
+                } catch (MalformedURLException e) {
+                    Log.e("test", "Error processing Places API URL", e);
+                } catch (IOException e) {
+                    Log.e("test", "Error connecting to Places API", e);
+                }
+            }
+            return placesBuilder.toString();
+        }
+
+        //process data retrieved from doInBackground
+        protected void onPostExecute(String result) {
+            //parse place data returned from Google Places
+            //remove existing markers
+            if (placeMarkers != null) {
+                for (int pm = 0; pm < placeMarkers.length; pm++) {
+                    if (placeMarkers[pm] != null)
+                        placeMarkers[pm].remove();
+                }
+            }
+            try {
+                //parse JSON
+
+                //create JSONObject, pass stinrg returned from doInBackground
+                JSONObject resultObject = new JSONObject(result);
+                //get "results" array
+                JSONArray placesArray = resultObject.getJSONArray("results");
+                //marker options for each place returned
+                places = new MarkerOptions[placesArray.length()];
+                //loop through places
+
+                for (int p = 0; p < placesArray.length(); p++) {
+                    //parse each place
+                    //if any values are missing we won't show the marker
+                    boolean missingValue = false;
+                    LatLng placeLL = null;
+                    String placeName = "";
+                    String vicinity = "";
+                    int currIcon = bankIcon;
+                    try {
+                        //attempt to retrieve place data values
+                        missingValue = false;
+                        //get place at this index
+                        JSONObject placeObject = placesArray.getJSONObject(p);
+                        //get location section
+                        JSONObject loc = placeObject.getJSONObject("geometry")
+                                .getJSONObject("location");
+                        //read lat lng
+                        placeLL = new LatLng(Double.valueOf(loc.getString("lat")),
+                                Double.valueOf(loc.getString("lng")));
+                        //get types
+                        JSONArray types = placeObject.getJSONArray("types");
+                        //loop through types
+                        for(int t=0; t<types.length(); t++){
+                            //what type is it
+                            String thisType=types.get(t).toString();
+                        }
+                        //vicinity
+                        vicinity = placeObject.getString("vicinity");
+                        //name
+                        placeName = placeObject.getString("name");
+                    } catch (JSONException jse) {
+                        Log.v("PLACES", "missing value");
+                        missingValue = true;
+                        jse.printStackTrace();
+                    }
+                    //if values missing we don't display
+                    if (missingValue) places[p] = null;
+                    else
+                        places[p] = new MarkerOptions()
+                                .position(placeLL)
+                                .title(placeName)
+                                .snippet(vicinity);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (places != null && placeMarkers != null) {
+                Log.d("test", "The placeMarkers length is " + placeMarkers.length + "...............");
+
+                for (int p = 0; p < places.length && p < placeMarkers.length; p++) {
+                    //will be null if a value was missing
+
+                    if (places[p] != null) {
+
+                        placeMarkers[p] = map.addMarker(places[p]);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+
+    /*@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -41,8 +280,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMyLocationButto
             @Override
             public void onMapReady(@NonNull GoogleMap map) {
                 enableMyLocation(map);
-                //map.setOnMyLocationButtonClickListener(this);
-                //map.setOnMyLocationClickListener(this);
+                Places.initialize(getContext(), "AIzaSyBVf95WgIjA5qAH5MGdOEM9PLc1l_4WLVA");
             }
         });
         return binding.getRoot();
@@ -60,15 +298,5 @@ public class MapFragment extends Fragment implements GoogleMap.OnMyLocationButto
         }
 
         PermissionUtils.requestLocationPermissions(getActivity(), LOCATION_PERMISSION_REQUEST_CODE, true);
-    }
-
-    @Override
-    public boolean onMyLocationButtonClick() {
-        return false;
-    }
-
-    @Override
-    public void onMyLocationClick(@NonNull Location location) {
-
-    }
+    }*/
 }
