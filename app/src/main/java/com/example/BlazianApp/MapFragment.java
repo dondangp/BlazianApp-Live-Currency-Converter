@@ -100,9 +100,6 @@ public class MapFragment extends Fragment {
         PermissionUtils.requestLocationPermissions(getActivity(), LOCATION_PERMISSION_REQUEST_CODE, true);
     }
 
-    /*
-     * update the place markers
-     */
     private void updatePlaces(){
         //get location manager
         //get last location
