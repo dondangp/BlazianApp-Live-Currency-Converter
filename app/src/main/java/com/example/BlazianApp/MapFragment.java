@@ -1,91 +1,74 @@
 package com.example.BlazianApp;
 
+import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.Manifest;
+import android.Manifest.permission;
+import android.location.Location;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.core.content.ContextCompat;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.example.BlazianApp.databinding.FragmentMapBinding;
 
-public class MapFragment extends Fragment {
+public class MapFragment extends Fragment implements GoogleMap.OnMyLocationButtonClickListener,
+        GoogleMap.OnMyLocationClickListener {
 
-    /**private GoogleMap mMap;
+    private GoogleMap map;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
     }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_map, container, false);
-    }
-
-    @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
-        mMap = googleMap;
-
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions()
-                .position(sydney)
-                .title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //super.onCreate(savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_map, container, false);
+        FragmentMapBinding binding = FragmentMapBinding.inflate(getLayoutInflater());
         SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.google_map);
 
         supportMapFragment.getMapAsync(new OnMapReadyCallback() {
-            /**@Override
-            public void onMapReady(@NonNull GoogleMap googleMap) {
-                LatLng sydney = new LatLng(-34, 151);
-                googleMap.addMarker(new MarkerOptions()
-                        .position(sydney)
-                        .title("Marker in Sydney"));
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-            }*/
             @Override
-            public void onMapReady(GoogleMap googleMap) {
-                // When map is loaded
-                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                    @Override
-                    public void onMapClick(LatLng latLng) {
-                        // When clicked on map
-                        // Initialize marker options
-                        MarkerOptions markerOptions=new MarkerOptions();
-                        // Set position of marker
-                        markerOptions.position(latLng);
-                        // Set title of marker
-                        markerOptions.title(latLng.latitude+" : "+latLng.longitude);
-                        // Remove all marker
-                        googleMap.clear();
-                        // Animating to zoom the marker
-                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));
-                        // Add marker on map
-                        googleMap.addMarker(markerOptions);
-                    }
-                });
+            public void onMapReady(@NonNull GoogleMap map) {
+                enableMyLocation(map);
+                //map.setOnMyLocationButtonClickListener(this);
+                //map.setOnMyLocationClickListener(this);
             }
         });
-        return view;
+        return binding.getRoot();
+    }
+
+    @SuppressLint("MissingPermission")
+    private void enableMyLocation(GoogleMap map) {
+        // 1. Check if permissions are granted, if so, enable the my location layer
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(getActivity(), permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            map.setMyLocationEnabled(true);
+            return;
+        }
+
+        PermissionUtils.requestLocationPermissions(getActivity(), LOCATION_PERMISSION_REQUEST_CODE, true);
+    }
+
+    @Override
+    public boolean onMyLocationButtonClick() {
+        return false;
+    }
+
+    @Override
+    public void onMyLocationClick(@NonNull Location location) {
+
     }
 }
