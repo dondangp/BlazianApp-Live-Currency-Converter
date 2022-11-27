@@ -1,7 +1,9 @@
 package com.example.BlazianApp;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -45,7 +47,6 @@ public class MapFragment extends Fragment {
     private GoogleMap map;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private LocationManager locationManager;
-    private Marker userMarker;
     private boolean updateFinished = true;
 
     private Marker[] placeMarkers;
@@ -54,13 +55,14 @@ public class MapFragment extends Fragment {
     private int bankIcon = R.drawable.bank_point;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); }
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @SuppressLint("NewApi")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FragmentMapBinding binding = FragmentMapBinding.inflate(getLayoutInflater());
-        getActivity().setContentView(R.layout.fragment_map);
         //find out if we already have it
         if(map==null){
             //get the map
@@ -69,6 +71,8 @@ public class MapFragment extends Fragment {
                 @Override
                 public void onMapReady(@NonNull GoogleMap map) {
                     enableMyLocation(map);
+                    locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+                    updatePlaces(map);
                 }
             });
         }
@@ -82,39 +86,26 @@ public class MapFragment extends Fragment {
                 == PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(getActivity(), permission.ACCESS_COARSE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            //map.setMyLocationEnabled(true);
-            map.getUiSettings().setMyLocationButtonEnabled(true);
+            map.setMyLocationEnabled(true);
             return;
         }
 
         PermissionUtils.requestLocationPermissions(getActivity(), LOCATION_PERMISSION_REQUEST_CODE, true);
     }
 
-    public void onLocationChanged(Location location) {
-        updatePlaces();
-    }
-
     /*
      * update the place markers
      */
-    private void updatePlaces(){
+    private void updatePlaces(@NonNull GoogleMap map){
         //get location manager
         //get last location
         @SuppressLint("MissingPermission") Location lastLoc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        double lat = lastLoc.getLatitude();
-        double lng = lastLoc.getLongitude();
+        double lat = 32.732558496903614;
+        double lng = -97.11363166775861;
         //create LatLng
         LatLng lastLatLng = new LatLng(lat, lng);
-
-        //remove any existing marker
-        if(userMarker!=null) userMarker.remove();
-        //create and set marker properties
-        userMarker = map.addMarker(new MarkerOptions()
-                .position(lastLatLng)
-                .title("You are here")
-                .snippet("Your last recorded location"));
         //move to location
-        map.animateCamera(CameraUpdateFactory.newLatLng(lastLatLng), 3000, null);
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(lastLatLng, 18), 3000, null);
 
         //build places query string
         String placesSearchStr = "https://maps.googleapis.com/maps/api/place/nearbysearch/" +
@@ -224,7 +215,6 @@ public class MapFragment extends Fragment {
                         //name
                         placeName = placeObject.getString("name");
                     } catch (JSONException jse) {
-                        Log.v("PLACES", "missing value");
                         missingValue = true;
                         jse.printStackTrace();
                     }
@@ -240,7 +230,6 @@ public class MapFragment extends Fragment {
                 e.printStackTrace();
             }
             if (places != null && placeMarkers != null) {
-                Log.d("test", "The placeMarkers length is " + placeMarkers.length + "...............");
 
                 for (int p = 0; p < places.length && p < placeMarkers.length; p++) {
                     //will be null if a value was missing
