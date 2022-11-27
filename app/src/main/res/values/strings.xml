@@ -4,7 +4,38 @@
     <string name="page_2">Records</string>
     <string name="page_3">Convert</string>
     <string name="page_4">Inflation</string>
-    <string name="page_5">Credits</string>
+    <string name="page_5">About</string>
 
+    <string name="credits_txt">
+        <![CDATA[
+
+<h2 style="text-align: left;">Licensing</h2>
+<p>This software is currently using the following and will give credit.</p>
+<p><strong>RetroFit</strong> - <a href="https://square.github.io/retrofit/">URL</a> || <a href="https://www.apache.org/licenses/LICENSE-2.0.txt">LICENSE</a></p>
+<p><strong>ExchangeRate-API</strong> - <a href="https://www.exchangerate-api.com/">URL</a> || <a href="https://www.exchangerate-api.com/terms">LICENSE</a></p>
+<p><strong>MPAndroidChart</strong> - <a href="https://github.com/PhilJay/MPAndroidChart">URL</a> || <a href="https://www.apache.org/licenses/LICENSE-2.0.txt">LICENSE</a></p>
+<p><strong>Google Icons</strong> - <a href="https://github.com/google/material-design-icons">URL</a> || <a href="https://www.apache.org/licenses/LICENSE-2.0.txt">LICENSE</a></p>
+<h2 style="text-align: left;">Team Members</h2>
+<p>Don Dang</p>
+<p>Ron Nguyen</p>
+<p>Megumi Saeki</p>
+<p>Jonathan Tran</p>
+<h2>Repository</h2>
+<p><a href="https://github.com/TahMeat/BlazianApp">https://github.com/TahMeat/BlazianApp</a></p>
+
+        ]]>
+</string>
+
+    <string-array name="securityQuestions">
+        <item>In what city were you born?</item>
+        <item>What is the name of your favorite pet?</item>
+        <item>What is your mother\'s maiden name?</item>
+        <item>What high school did you attend?</item>
+        <item>What was the name of your elementary school?</item>
+        <item>What was the make of your first car?</item>
+        <item>What was your favorite food as a child?</item>
+        <item>Where did you meet your spouse?</item>
+        <item>What year was your father (or mother) born?</item>
+    </string-array>
 
 </resources>
