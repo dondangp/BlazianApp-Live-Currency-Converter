@@ -69,10 +69,12 @@ public class MapFragment extends Fragment {
             SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.google_map);
             supportMapFragment.getMapAsync(new OnMapReadyCallback() {
                 @Override
-                public void onMapReady(@NonNull GoogleMap map) {
+                public void onMapReady(@NonNull GoogleMap googleMap) {
+                    map = googleMap;
                     enableMyLocation(map);
                     locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
-                    updatePlaces(map);
+                    placeMarkers = new Marker[MAX_PLACES];
+                    updatePlaces();
                 }
             });
         }
@@ -96,7 +98,7 @@ public class MapFragment extends Fragment {
     /*
      * update the place markers
      */
-    private void updatePlaces(@NonNull GoogleMap map){
+    private void updatePlaces(){
         //get location manager
         //get last location
         @SuppressLint("MissingPermission") Location lastLoc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -176,7 +178,7 @@ public class MapFragment extends Fragment {
             try {
                 //parse JSON
 
-                //create JSONObject, pass stinrg returned from doInBackground
+                //create JSONObject, pass string returned from doInBackground
                 JSONObject resultObject = new JSONObject(result);
                 //get "results" array
                 JSONArray placesArray = resultObject.getJSONArray("results");
@@ -189,8 +191,10 @@ public class MapFragment extends Fragment {
                     //if any values are missing we won't show the marker
                     boolean missingValue = false;
                     LatLng placeLL = null;
-                    String placeName = "";
-                    String vicinity = "";
+                    String placeName = "Not Provided";
+                    String vicinity = "Not Provided";
+                    String phoneNumber = "Not Provided";
+                    String website = "Not Provided";
                     int currIcon = bankIcon;
                     try {
                         //attempt to retrieve place data values
@@ -214,17 +218,18 @@ public class MapFragment extends Fragment {
                         vicinity = placeObject.getString("vicinity");
                         //name
                         placeName = placeObject.getString("name");
+                        //phone number
+                        phoneNumber = placeObject.getString("formatted_phone_number");
+                        //website
+                        website = placeObject.getString("website");
                     } catch (JSONException jse) {
                         missingValue = true;
                         jse.printStackTrace();
                     }
-                    //if values missing we don't display
-                    if (missingValue) places[p] = null;
-                    else
                         places[p] = new MarkerOptions()
                                 .position(placeLL)
                                 .title(placeName)
-                                .snippet(vicinity);
+                                .snippet(vicinity+"\n"+phoneNumber+"\n"+website);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
